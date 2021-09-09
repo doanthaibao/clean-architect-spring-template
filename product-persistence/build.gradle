@@ -1,0 +1,13 @@
+dependencies {
+  implementation("javax.inject:javax.inject:$javaxInject")
+  implementation("org.springframework:spring-context:$springVersion")
+  implementation("org.hibernate:hibernate-core:$hibernateVersion")
+  implementation("org.springframework.data:spring-data-jpa:$springDataJpaVersion")
+  implementation("org.mapstruct:mapstruct:$mapstructVersion")
+  implementation("org.flywaydb:flyway-core:7.8.2")
+  implementation(project(':product-domain'))
+  implementation("org.springframework:spring-test:$springVersion")
+  implementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
+  implementation("com.h2database:h2:$h2Version")
+}
+

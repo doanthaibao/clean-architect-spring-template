@@ -1,0 +1,103 @@
+plugins {
+    id 'java'
+    id 'build-dashboard'
+    id 'project-report'
+    id 'jacoco'
+    id 'org.unbroken-dome.test-sets'
+    id "org.springframework.boot"
+    id "io.spring.dependency-management"
+}
+
+group 'bao.doan'
+version '1.0-SNAPSHOT'
+
+apply plugin: "org.springframework.boot"
+
+allprojects {
+    apply plugin: "java"
+    apply plugin: "jacoco"
+    apply plugin: "build-dashboard"
+    apply plugin: "project-report"
+    apply plugin: "org.unbroken-dome.test-sets"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok:1.18.20'
+        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+        testCompileOnly 'org.projectlombok:lombok:1.18.20'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+        testImplementation('org.junit.jupiter:junit-jupiter-params:5.7.0')
+        testImplementation('org.assertj:assertj-core:3.19.0')
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+        compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
+        annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    }
+    tasks.withType(JavaCompile) {
+        if (!project.hasProperty("suppressWarnings")) {
+            options.compilerArgs += ["-Werror", "-Xlint:all,-processing", "-parameters"]
+        }
+    }
+    tasks.withType(Test) {
+        useJUnitPlatform()
+    }
+
+    jacocoTestReport {
+        dependsOn test
+    }
+
+    test {
+        finalizedBy jacocoTestReport
+    }
+
+    tasks.withType(Test) {
+        systemProperty "java.util.logging.config.file", "$projectDir/config/loggin.properties"
+    }
+
+    testSets {
+        integrationTest
+    }
+
+    check {
+        dependsOn += jacocoTestCoverageVerification
+        dependsOn += integrationTest
+    }
+
+    jacoco {
+        toolVersion = "0.8.6"
+    }
+
+    jacocoTestCoverageVerification {
+        dependsOn jacocoTestReport
+        violationRules {
+            rule {
+                limit {
+                    minimum = 0.00
+                }
+            }
+        }
+    }
+    test {
+        useJUnitPlatform()
+    }
+
+}
+
+dependencies {
+    implementation(project(":app"))
+    implementation(project(":product-domain"))
+    implementation(project(":product-usecase"))
+    implementation(project(":product-persistence"))
+    implementation(project(":product-api"))
+}
+
+wrapper {
+    gradleVersion = "6.8.3"
+    distributionType = "ALL"
+}
