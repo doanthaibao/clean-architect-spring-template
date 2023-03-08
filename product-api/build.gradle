@@ -12,5 +12,5 @@
      implementation("org.springframework:spring-test:$springVersion")
      implementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
      implementation("javax.servlet:javax.servlet-api:$servletVersion")
-     implementation("org.springframework.boot:spring-boot-test-autoconfigure:$spring_boot")
+     implementation("org.springframework.boot:spring-boot-test-autoconfigure:$springBootVersion")
  }

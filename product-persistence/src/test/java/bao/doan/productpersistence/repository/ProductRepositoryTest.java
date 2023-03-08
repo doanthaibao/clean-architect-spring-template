@@ -2,7 +2,7 @@ package bao.doan.productpersistence.repository;
 
 import bao.doan.productpersistence.ProductPersistenceConfiguration;
 import bao.doan.productpersistence.entity.ProductEntity;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
