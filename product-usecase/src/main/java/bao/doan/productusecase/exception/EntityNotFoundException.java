@@ -11,7 +11,7 @@ public class EntityNotFoundException extends RuntimeException {
 
   private static final String DELIMITER = ", ";
   @Getter
-  private final List<ErrorDetail> errorDetails;
+  private final transient List<ErrorDetail> errorDetails;
 
   public EntityNotFoundException(final ErrorDetail errorDetail) {
     super();

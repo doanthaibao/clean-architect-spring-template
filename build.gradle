@@ -29,10 +29,10 @@ allprojects {
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-        testImplementation('org.junit.jupiter:junit-jupiter-params:5.7.0')
-        testImplementation('org.assertj:assertj-core:3.19.0')
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+        testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+        testImplementation("org.assertj:assertj-core:$assertjVersion")
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
         compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
         annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     }

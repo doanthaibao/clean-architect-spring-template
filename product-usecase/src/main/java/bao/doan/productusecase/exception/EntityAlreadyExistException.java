@@ -11,7 +11,7 @@ public class EntityAlreadyExistException extends RuntimeException {
 
   private static final String DELIMITER = ", ";
   @Getter
-  private final List<ErrorDetail> errorDetails;
+  private final transient List<ErrorDetail> errorDetails;
 
   public EntityAlreadyExistException(final ErrorDetail errorDetail) {
     super();

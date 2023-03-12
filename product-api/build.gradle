@@ -1,16 +1,14 @@
- dependencies {
-     implementation("org.springframework:spring-webmvc:$springVersion")
-     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
-     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
-     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
-     implementation("javax.validation:validation-api:$validationApiVersion")
-     implementation("org.mapstruct:mapstruct:$mapstructVersion")
-
-     implementation(project(":product-domain"))
-     implementation(project(":product-usecase"))
-
-     implementation("org.springframework:spring-test:$springVersion")
-     implementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
-     implementation("javax.servlet:javax.servlet-api:$servletVersion")
-     implementation("org.springframework.boot:spring-boot-test-autoconfigure:$springBootVersion")
- }
+dependencies {
+    implementation("org.springframework:spring-webmvc:$springVersion")
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("javax.validation:validation-api:$validationApiVersion")
+    implementation("org.mapstruct:mapstruct:$mapstructVersion")
+    implementation(project(":product-domain"))
+    implementation(project(":product-usecase"))
+    implementation("org.springframework:spring-test:$springVersion")
+    implementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
+    implementation "jakarta.servlet:jakarta.servlet-api:$servletVersion"
+    implementation("org.springframework.boot:spring-boot-test-autoconfigure:$springBootVersion")
+}

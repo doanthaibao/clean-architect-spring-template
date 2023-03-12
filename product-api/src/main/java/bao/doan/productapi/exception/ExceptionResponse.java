@@ -18,7 +18,7 @@ public class ExceptionResponse implements Serializable {
   private static final long serialVersionUID = -8324344343443433434L;
 
   private final String error;
-  private final List<ErrorDetail> errorDetails;
+  private final transient List<ErrorDetail> errorDetails;
   private final String path;
   private final Integer code;
   private final String traceId;

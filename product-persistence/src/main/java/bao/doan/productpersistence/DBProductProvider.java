@@ -4,7 +4,7 @@ import bao.doan.productdomain.Product;
 import bao.doan.productdomain.ProductProvider;
 import bao.doan.productpersistence.mapper.ProductMapper;
 import bao.doan.productpersistence.repository.ProductRepository;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.mapstruct.factory.Mappers;

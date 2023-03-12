@@ -15,10 +15,9 @@ dependencies {
     implementation(project(":product-domain"))
     implementation(project(":product-persistence"))
     implementation(project(":product-usecase"))
-
     implementation ("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation ("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-    implementation ("org.flywaydb:flyway-core:$flywayVersion")
-    implementation ("org.postgresql:postgresql:$postgresSqlVersion")
+    implementation ("org.flywaydb:flyway-mysql:$flywayVersion")
+    implementation ("com.mysql:mysql-connector-j:$mysqlVersion")
     testImplementation ("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }

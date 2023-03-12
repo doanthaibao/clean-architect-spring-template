@@ -1,5 +1,5 @@
 
 dependencies {
     implementation(project(':product-domain'))
-    implementation("javax.inject:javax.inject:$javaxInject")
+    implementation "jakarta.inject:jakarta.inject-api:$jakarktaInject"
 }

@@ -6,7 +6,8 @@ import bao.doan.productdomain.ProductProvider;
 import bao.doan.productusecase.exception.EntityAlreadyExistException;
 import bao.doan.productusecase.exception.ErrorDetail;
 import java.util.Objects;
-import javax.inject.Named;
+
+import jakarta.inject.Named;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
