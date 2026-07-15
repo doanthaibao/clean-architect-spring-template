@@ -7,23 +7,18 @@ import bao.doan.productusecase.exception.EntityAlreadyExistException;
 import bao.doan.productusecase.exception.ErrorDetail;
 import bao.doan.productusecase.model.ProductRequest;
 import bao.doan.productusecase.model.ProductResponse;
+import bao.doan.productusecase.port.in.AddProductInputPort;
 import java.util.Objects;
 
-import jakarta.inject.Named;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@RequiredArgsConstructor
-@Builder
-@Named
-public class AddProductUseCase {
+public class AddProductUseCase implements AddProductInputPort {
 
   private final ProductProvider productProvider;
 
+  public AddProductUseCase(ProductProvider productProvider) {
+    this.productProvider = productProvider;
+  }
+
+  @Override
   public ProductResponse addProduct(ProductRequest productRequest) {
     final var product = toProduct(productRequest);
     if (Objects.nonNull(productProvider.getProduct(product.getId()))) {
@@ -34,16 +29,13 @@ public class AddProductUseCase {
 
   private Product toProduct(ProductRequest productRequest) {
     return Product.builder()
-        .id(productRequest.getId())
-        .name(productRequest.getName())
+        .id(productRequest.id())
+        .name(productRequest.name())
         .build();
   }
 
   private ProductResponse toProductResponse(Product product) {
-    return ProductResponse.builder()
-        .id(product.getId())
-        .name(product.getName())
-        .build();
+    return new ProductResponse(product.getId(), product.getName());
   }
 
 }

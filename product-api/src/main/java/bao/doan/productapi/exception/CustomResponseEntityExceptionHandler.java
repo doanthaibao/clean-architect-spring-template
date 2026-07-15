@@ -4,6 +4,7 @@ import bao.doan.productusecase.exception.EntityAlreadyExistException;
 import bao.doan.productusecase.exception.EntityNotFoundException;
 import bao.doan.productusecase.exception.ErrorDetail;
 import java.util.Collections;
+import java.util.List;
 import lombok.Generated;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
       final WebRequest request) {
     final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
         .error(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-        .errorDetails(Collections.singletonList(new ErrorDetail(null, ex.getMessage())))
+        .errorDetails(Collections.singletonList(new ErrorDto(null, ex.getMessage())))
         .path(request.getDescription(false))
         .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
         .build();
@@ -36,7 +37,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
       final WebRequest request) {
     final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
         .error(HttpStatus.NOT_FOUND.toString())
-        .errorDetails(entityNotFoundException.getErrorDetails())
+        .errorDetails(toErrorDtos(entityNotFoundException.getErrorDetails()))
         .path(request.getDescription(false))
         .code(HttpStatus.NOT_FOUND.value())
         .build();
@@ -49,11 +50,17 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
       final WebRequest request) {
     final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
         .error(HttpStatus.CONFLICT.toString())
-        .errorDetails(entityAlreadyExistException.getErrorDetails())
+        .errorDetails(toErrorDtos(entityAlreadyExistException.getErrorDetails()))
         .path(request.getDescription(false))
         .code(HttpStatus.CONFLICT.value())
         .build();
     return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+  }
+
+  private List<ErrorDto> toErrorDtos(List<ErrorDetail> errorDetails) {
+    return errorDetails.stream()
+        .map(errorDetail -> new ErrorDto(errorDetail.getField(), errorDetail.getMessage()))
+        .toList();
   }
 
 }

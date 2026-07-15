@@ -1,9 +1,7 @@
 package bao.doan.productapi.product;
 
-import static org.mapstruct.factory.Mappers.getMapper;
-
-import bao.doan.productusecase.AddProductUseCase;
-import bao.doan.productusecase.GetProductUseCase;
+import bao.doan.productusecase.port.in.AddProductInputPort;
+import bao.doan.productusecase.port.in.GetProductInputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductController {
 
-  private final GetProductUseCase getProductUseCase;
-  private final AddProductUseCase addProductUseCase;
+  private final GetProductInputPort getProductUseCase;
+  private final AddProductInputPort addProductUseCase;
+  private final ProductDtoMapper productDtoMapper;
 
   @GetMapping("/v1/product/{id}")
-  public ResponseEntity<ProductDto> getProduct(@PathVariable("id") String id) {
-    final var result = getMapper(ProductDtoMapper.class).dtoFromResponse(
-        getProductUseCase.getProduct(id));
+  public ResponseEntity<ProductDto> getProduct(@PathVariable String id) {
+    final var result = productDtoMapper.dtoFromResponse(getProductUseCase.getProduct(id));
     return ResponseEntity.ok().body(result);
   }
 
   @PostMapping("/v1/product")
   public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-    final var product = getMapper(ProductDtoMapper.class).requestFromDto(productDto);
-    final var productDtoR = getMapper(ProductDtoMapper.class).dtoFromResponse(
+    final var product = productDtoMapper.requestFromDto(productDto);
+    final var productDtoR = productDtoMapper.dtoFromResponse(
         addProductUseCase.addProduct(product));
     return ResponseEntity.status(HttpStatus.CREATED).body(productDtoR);
   }

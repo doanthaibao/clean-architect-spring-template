@@ -5,24 +5,18 @@ import bao.doan.productdomain.ProductProvider;
 import bao.doan.productusecase.exception.EntityNotFoundException;
 import bao.doan.productusecase.exception.ErrorDetail;
 import bao.doan.productusecase.model.ProductResponse;
+import bao.doan.productusecase.port.in.GetProductInputPort;
 import java.util.Optional;
 
-import jakarta.inject.Named;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-
-
-@Getter
-@Setter
-@RequiredArgsConstructor
-@Builder
-@Named
-public class GetProductUseCase {
+public class GetProductUseCase implements GetProductInputPort {
 
   private final ProductProvider productProvider;
 
+  public GetProductUseCase(ProductProvider productProvider) {
+    this.productProvider = productProvider;
+  }
+
+  @Override
   public ProductResponse getProduct(String id) {
     var product = productProvider.getProduct(id);
     return toProductResponse(Optional.ofNullable(product).orElseThrow(
@@ -30,9 +24,6 @@ public class GetProductUseCase {
   }
 
   private ProductResponse toProductResponse(Product product) {
-    return ProductResponse.builder()
-        .id(product.getId())
-        .name(product.getName())
-        .build();
+    return new ProductResponse(product.getId(), product.getName());
   }
 }
