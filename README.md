@@ -7,6 +7,102 @@ This is a small backend project with clean architect and Spring Boot 4.1, Java 2
 
 # Components
 
+```mermaid
+classDiagram
+    direction LR
+
+    namespace app {
+        class AppApplication
+        class ProductPersistenceConfiguration
+    }
+
+    namespace product_api {
+        class ProductController {
+            -GetProductUseCase getProductUseCase
+            -AddProductUseCase addProductUseCase
+            +getProduct(String id) ResponseEntity~ProductDto~
+            +createProduct(ProductDto productDto) ResponseEntity~ProductDto~
+        }
+        class ProductDto {
+            -String id
+            -String name
+        }
+        class ProductDtoMapper {
+            +dtoFromBusiness(Product product) ProductDto
+            +businessFromDto(ProductDto productDto) Product
+        }
+    }
+
+    namespace product_usecase {
+        class GetProductUseCase {
+            -ProductProvider productProvider
+            +getProduct(String id) Product
+        }
+        class AddProductUseCase {
+            -ProductProvider productProvider
+            +addProduct(Product product) Product
+        }
+    }
+
+    namespace product_domain {
+        class Product {
+            -String id
+            -String name
+        }
+        class ProductProvider {
+            <<interface>>
+            +getProduct(String id) Product
+            +addProduct(Product product) Product
+        }
+    }
+
+    namespace product_persistence {
+        class DBProductProvider {
+            -ProductRepository productRepository
+            +getProduct(String id) Product
+            +addProduct(Product product) Product
+        }
+        class ProductRepository {
+            <<interface>>
+            +findProductByProductId(String productId) ProductEntity
+        }
+        class ProductEntity {
+            -String id
+            -String productId
+            -String name
+        }
+        class ProductMapper {
+            +fromBusinessToEntity(Product product) ProductEntity
+            +fromEntityToBusiness(ProductEntity productEntity) Product
+        }
+    }
+
+    AppApplication ..> ProductController : component scan
+    AppApplication ..> ProductPersistenceConfiguration : loads
+    ProductPersistenceConfiguration ..> ProductRepository : enables JPA repositories
+
+    ProductController --> GetProductUseCase
+    ProductController --> AddProductUseCase
+    ProductController ..> ProductDtoMapper
+    ProductController ..> ProductDto
+
+    GetProductUseCase --> ProductProvider
+    AddProductUseCase --> ProductProvider
+    GetProductUseCase ..> Product
+    AddProductUseCase ..> Product
+
+    ProductProvider <|.. DBProductProvider
+    DBProductProvider --> ProductRepository
+    DBProductProvider ..> ProductMapper
+    DBProductProvider ..> Product
+
+    ProductRepository --> ProductEntity
+    ProductMapper ..> Product
+    ProductMapper ..> ProductEntity
+    ProductDtoMapper ..> Product
+    ProductDtoMapper ..> ProductDto
+```
+
 
 ## Domain
 
