@@ -12,14 +12,15 @@ import bao.doan.productusecase.AddProductUseCase;
 import bao.doan.productusecase.GetProductUseCase;
 import bao.doan.productusecase.exception.EntityAlreadyExistException;
 import bao.doan.productusecase.exception.EntityNotFoundException;
+import bao.doan.productusecase.exception.ErrorDetail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -33,10 +34,10 @@ public class ProductControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @MockBean
+  @MockitoBean
   private GetProductUseCase getProductUseCase;
 
-  @MockBean
+  @MockitoBean
   private AddProductUseCase addProductUseCase;
 
   private final ObjectMapper objectMapper = new ObjectMapper();
@@ -59,7 +60,8 @@ public class ProductControllerTest {
 
   @Test
   public void getNoResultWithId() throws Exception {
-    doThrow(EntityNotFoundException.class).when(getProductUseCase).getProduct(anyString());
+    doThrow(new EntityNotFoundException(new ErrorDetail("id", "not found")))
+        .when(getProductUseCase).getProduct(anyString());
     this.mockMvc.perform(MockMvcRequestBuilders.get("/v1/product/{id}", "33"))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
@@ -75,7 +77,8 @@ public class ProductControllerTest {
 
   @Test
   public void returnExistExceptionWhenCreateProduct() throws Exception {
-    doThrow(EntityAlreadyExistException.class).when(addProductUseCase).addProduct(any(Product.class));
+    doThrow(new EntityAlreadyExistException(new ErrorDetail("id", "already exists")))
+        .when(addProductUseCase).addProduct(any(Product.class));
     this.mockMvc.perform(MockMvcRequestBuilders.post("/v1/product")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(product)))

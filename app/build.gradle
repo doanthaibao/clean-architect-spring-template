@@ -1,7 +1,6 @@
 
 plugins {
     id "org.springframework.boot"
-    id "io.spring.dependency-management"
 }
 
 configurations {
@@ -15,9 +14,10 @@ dependencies {
     implementation(project(":product-domain"))
     implementation(project(":product-persistence"))
     implementation(project(":product-usecase"))
-    implementation ("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    implementation ("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-    implementation ("org.flywaydb:flyway-mysql:$flywayVersion")
-    implementation ("com.mysql:mysql-connector-j:$mysqlVersion")
-    testImplementation ("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.flywaydb:flyway-mysql"
+    implementation "com.mysql:mysql-connector-j"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testRuntimeOnly "com.h2database:h2"
 }

@@ -3,38 +3,44 @@ plugins {
     id 'build-dashboard'
     id 'project-report'
     id 'jacoco'
-    id 'org.unbroken-dome.test-sets'
-    id "org.springframework.boot"
-    id "io.spring.dependency-management"
+    id "org.springframework.boot" apply false
 }
 
-group 'bao.doan'
-version '1.0-SNAPSHOT'
-
-apply plugin: "org.springframework.boot"
+group = 'bao.doan'
+version = '1.0-SNAPSHOT'
 
 allprojects {
     apply plugin: "java"
     apply plugin: "jacoco"
     apply plugin: "build-dashboard"
     apply plugin: "project-report"
-    apply plugin: "org.unbroken-dome.test-sets"
 
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        compileOnly "org.projectlombok:lombok:$lombokVersion"
-        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
-        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
-        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-        testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
-        testImplementation("org.assertj:assertj-core:$assertjVersion")
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+        implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+        annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+        testImplementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+        testAnnotationProcessor platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+
+        compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
+        testCompileOnly "org.projectlombok:lombok"
+        testAnnotationProcessor "org.projectlombok:lombok"
+        testImplementation "org.junit.jupiter:junit-jupiter-api"
+        testImplementation "org.junit.jupiter:junit-jupiter-params"
+        testImplementation "org.assertj:assertj-core"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+        testRuntimeOnly "org.junit.platform:junit-platform-launcher"
         compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
         annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
     }
     tasks.withType(JavaCompile) {
         if (!project.hasProperty("suppressWarnings")) {
@@ -57,17 +63,36 @@ allprojects {
         systemProperty "java.util.logging.config.file", "$projectDir/config/loggin.properties"
     }
 
-    testSets {
-        integrationTest
+    sourceSets {
+        integrationTest {
+            java.srcDir file("src/integrationTest/java")
+            resources.srcDir file("src/integrationTest/resources")
+            compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+            runtimeClasspath += output + compileClasspath
+        }
+    }
+
+    configurations {
+        integrationTestImplementation.extendsFrom testImplementation
+        integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+    }
+
+    tasks.register("integrationTest", Test) {
+        description = "Runs integration tests."
+        group = "verification"
+        testClassesDirs = sourceSets.integrationTest.output.classesDirs
+        classpath = sourceSets.integrationTest.runtimeClasspath
+        shouldRunAfter test
+        useJUnitPlatform()
     }
 
     check {
         dependsOn += jacocoTestCoverageVerification
-        dependsOn += integrationTest
+        dependsOn += tasks.named("integrationTest")
     }
 
     jacoco {
-        toolVersion = "0.8.8"
+        toolVersion = "0.8.13"
     }
 
     jacocoTestCoverageVerification {
@@ -95,6 +120,6 @@ dependencies {
 }
 
 wrapper {
-    gradleVersion = "7.6.1"
+    gradleVersion = "9.6.0"
     distributionType = "ALL"
 }

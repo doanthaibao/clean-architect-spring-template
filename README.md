@@ -1,6 +1,6 @@
-# Clean architect with Spring boot 3.0 and Java 17
+# Clean architect with Spring Boot 4.1 and Java 25
 
-This is a small backend project with clean architect and Spring boot 3.0, Java 17. It was inspired by Uncle Bob clean [architecture blog](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). It is a kind of typical micro-service project can exchange data REST APIs, store data to a DB.
+This is a small backend project with clean architect and Spring Boot 4.1, Java 25. It was inspired by Uncle Bob clean [architecture blog](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). It is a kind of typical micro-service project can exchange data REST APIs, store data to a DB.
 
 ![enter image description here](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
 
@@ -32,13 +32,13 @@ Spring boot application to link all of components by dependency injection techni
 # Build and start application
 
 ## Build application
-`grade app:build` (gradle 7.6.1)
+`./gradlew app:build` (Gradle 9.6.0)
 
 ## Start application
 - Initial Mysql
   `docker-compose docker-compose/dockercompose.yaml -d`
 - Start spring boot application
-  `gradle app:bootRun`
+  `./gradlew app:bootRun`
 
 ## Testing
 
