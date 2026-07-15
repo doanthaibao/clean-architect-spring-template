@@ -1,13 +1,12 @@
 dependencies {
-  implementation("jakarta.inject:jakarta.inject-api:$jakarktaInject")
-  implementation("org.springframework:spring-context:$springVersion")
-  implementation("org.hibernate:hibernate-core:$hibernateVersion")
-  implementation("org.springframework.data:spring-data-jpa:$springDataJpaVersion")
-  implementation("org.mapstruct:mapstruct:$mapstructVersion")
-  implementation("org.flywaydb:flyway-core:$flywayVersion")
+  implementation "jakarta.inject:jakarta.inject-api:$jakarktaInject"
+  implementation "org.springframework:spring-context"
+  implementation "org.hibernate.orm:hibernate-core"
+  implementation "org.springframework.data:spring-data-jpa"
+  implementation "org.mapstruct:mapstruct:$mapstructVersion"
+  implementation "org.flywaydb:flyway-core"
   implementation(project(':product-domain'))
-  implementation("org.springframework:spring-test:$springVersion")
-  implementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
-  implementation("com.h2database:h2:$h2Version")
+  testImplementation "org.springframework:spring-test"
+  testImplementation "org.mockito:mockito-junit-jupiter"
+  testImplementation "com.h2database:h2"
 }
-

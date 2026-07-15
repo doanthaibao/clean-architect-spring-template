@@ -20,7 +20,7 @@ public class ProductRepositoryTest {
 
   @Test
   public void getProductEntity() {
-    final var actualProductEntity = ProductEntity.builder().id("xxxxx").productId("TST")
+    final var actualProductEntity = ProductEntity.builder().productId("TST")
         .name("Car product").build();
     productRepository.save(actualProductEntity);
     final var productEntity = productRepository.findProductByProductId(actualProductEntity.getProductId());

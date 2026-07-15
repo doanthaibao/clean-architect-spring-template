@@ -1,5 +1,6 @@
 package bao.doan.productusecase.exception;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import lombok.Getter;
 
 public class EntityNotFoundException extends RuntimeException {
 
+  @Serial
   private static final long serialVersionUID = 3432532234234234L;
 
   private static final String DELIMITER = ", ";

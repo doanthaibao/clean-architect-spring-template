@@ -3,6 +3,8 @@ package bao.doan.productapi.exception;
 import bao.doan.productusecase.exception.ErrorDetail;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +17,7 @@ import lombok.Getter;
 @Generated
 public class ExceptionResponse implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -8324344343443433434L;
 
   private final String error;

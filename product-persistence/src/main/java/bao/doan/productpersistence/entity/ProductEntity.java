@@ -1,6 +1,5 @@
 package bao.doan.productpersistence.entity;
 
-import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 @Table(name = "product")
 @Builder
@@ -23,11 +22,8 @@ import org.hibernate.annotations.GenericGenerator;
 public class ProductEntity {
 
   @Id
-  @GeneratedValue(generator = "UUID")
-  @GenericGenerator(
-      name = "UUID",
-      strategy = "org.hibernate.id.UUIDGenerator"
-  )
+  @GeneratedValue
+  @UuidGenerator
   @Column(name = "id", nullable = false, updatable = false)
   private String id;
 
