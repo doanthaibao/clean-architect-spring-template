@@ -6,11 +6,13 @@ import static org.mockito.Mockito.when;
 
 import bao.doan.productdomain.Product;
 import bao.doan.productpersistence.entity.ProductEntity;
+import bao.doan.productpersistence.mapper.ProductMapper;
 import bao.doan.productpersistence.repository.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,8 +23,13 @@ public class DBProductProviderTest {
   @Mock
   private transient ProductRepository productRepository;
 
-  @InjectMocks
   private transient DBProductProvider dbProductProvider;
+
+  @BeforeEach
+  void setUp() {
+    final ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
+    dbProductProvider = new DBProductProvider(productRepository, productMapper);
+  }
 
   @Test
   public void getProduct() {

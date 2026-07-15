@@ -14,9 +14,9 @@ public class GetProductUseCaseTest {
     var provider = new InMemoryProductProvider();
     var getProductUseCase = new GetProductUseCase(provider);
     var addProductUseCase = new AddProductUseCase(provider);
-    var product = ProductRequest.builder().id("1").build();
+    var product = new ProductRequest("1", null);
     addProductUseCase.addProduct(product);
-    Assertions.assertEquals("1", getProductUseCase.getProduct(product.getId()).getId());
+    Assertions.assertEquals("1", getProductUseCase.getProduct(product.id()).id());
   }
 
   @Test

@@ -1,6 +1,5 @@
 package bao.doan.productapi.exception;
 
-import bao.doan.productusecase.exception.ErrorDetail;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
@@ -21,7 +20,7 @@ public class ExceptionResponse implements Serializable {
   private static final long serialVersionUID = -8324344343443433434L;
 
   private final String error;
-  private final transient List<ErrorDetail> errorDetails;
+  private final transient List<ErrorDto> errorDetails;
   private final String path;
   private final Integer code;
   private final String traceId;

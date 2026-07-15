@@ -13,13 +13,15 @@ classDiagram
 
     namespace app {
         class AppApplication
+        class CleanArchitectureConfiguration
         class ProductPersistenceConfiguration
     }
 
     namespace product_api {
         class ProductController {
-            -GetProductUseCase getProductUseCase
-            -AddProductUseCase addProductUseCase
+            -GetProductInputPort getProductUseCase
+            -AddProductInputPort addProductUseCase
+            -ProductDtoMapper productDtoMapper
             +getProduct(String id) ResponseEntity~ProductDto~
             +createProduct(ProductDto productDto) ResponseEntity~ProductDto~
         }
@@ -34,6 +36,14 @@ classDiagram
     }
 
     namespace product_usecase {
+        class GetProductInputPort {
+            <<interface>>
+            +getProduct(String id) ProductResponse
+        }
+        class AddProductInputPort {
+            <<interface>>
+            +addProduct(ProductRequest productRequest) ProductResponse
+        }
         class GetProductUseCase {
             -ProductProvider productProvider
             +getProduct(String id) ProductResponse
@@ -67,6 +77,7 @@ classDiagram
     namespace product_persistence {
         class DBProductProvider {
             -ProductRepository productRepository
+            -ProductMapper productMapper
             +getProduct(String id) Product
             +addProduct(Product product) Product
         }
@@ -86,14 +97,22 @@ classDiagram
     }
 
     AppApplication ..> ProductController : component scan
+    AppApplication ..> CleanArchitectureConfiguration : loads
     AppApplication ..> ProductPersistenceConfiguration : loads
+    CleanArchitectureConfiguration ..> ProductDtoMapper : creates
+    CleanArchitectureConfiguration ..> ProductMapper : creates
+    CleanArchitectureConfiguration ..> DBProductProvider : creates
+    CleanArchitectureConfiguration ..> GetProductUseCase : creates
+    CleanArchitectureConfiguration ..> AddProductUseCase : creates
     ProductPersistenceConfiguration ..> ProductRepository : enables JPA repositories
 
-    ProductController --> GetProductUseCase
-    ProductController --> AddProductUseCase
+    ProductController --> GetProductInputPort
+    ProductController --> AddProductInputPort
     ProductController ..> ProductDtoMapper
     ProductController ..> ProductDto
 
+    GetProductInputPort <|.. GetProductUseCase
+    AddProductInputPort <|.. AddProductUseCase
     GetProductUseCase --> ProductProvider
     AddProductUseCase --> ProductProvider
     GetProductUseCase ..> Product
