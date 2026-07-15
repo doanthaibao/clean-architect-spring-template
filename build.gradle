@@ -39,7 +39,7 @@ allprojects {
     }
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(25)
+            languageVersion = JavaLanguageVersion.of(javaVersion)
         }
     }
     tasks.withType(JavaCompile) {
@@ -92,7 +92,7 @@ allprojects {
     }
 
     jacoco {
-        toolVersion = "0.8.13"
+        toolVersion = jacocoVersion
     }
 
     jacocoTestCoverageVerification {
@@ -120,6 +120,6 @@ dependencies {
 }
 
 wrapper {
-    gradleVersion = "9.6.0"
+    gradleVersion = project.gradleVersion
     distributionType = "ALL"
 }
