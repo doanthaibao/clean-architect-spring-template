@@ -28,19 +28,27 @@ classDiagram
             -String name
         }
         class ProductDtoMapper {
-            +dtoFromBusiness(Product product) ProductDto
-            +businessFromDto(ProductDto productDto) Product
+            +dtoFromResponse(ProductResponse productResponse) ProductDto
+            +requestFromDto(ProductDto productDto) ProductRequest
         }
     }
 
     namespace product_usecase {
         class GetProductUseCase {
             -ProductProvider productProvider
-            +getProduct(String id) Product
+            +getProduct(String id) ProductResponse
         }
         class AddProductUseCase {
             -ProductProvider productProvider
-            +addProduct(Product product) Product
+            +addProduct(ProductRequest productRequest) ProductResponse
+        }
+        class ProductRequest {
+            -String id
+            -String name
+        }
+        class ProductResponse {
+            -String id
+            -String name
         }
     }
 
@@ -89,7 +97,10 @@ classDiagram
     GetProductUseCase --> ProductProvider
     AddProductUseCase --> ProductProvider
     GetProductUseCase ..> Product
+    GetProductUseCase ..> ProductResponse
     AddProductUseCase ..> Product
+    AddProductUseCase ..> ProductRequest
+    AddProductUseCase ..> ProductResponse
 
     ProductProvider <|.. DBProductProvider
     DBProductProvider --> ProductRepository
@@ -99,7 +110,8 @@ classDiagram
     ProductRepository --> ProductEntity
     ProductMapper ..> Product
     ProductMapper ..> ProductEntity
-    ProductDtoMapper ..> Product
+    ProductDtoMapper ..> ProductRequest
+    ProductDtoMapper ..> ProductResponse
     ProductDtoMapper ..> ProductDto
 ```
 

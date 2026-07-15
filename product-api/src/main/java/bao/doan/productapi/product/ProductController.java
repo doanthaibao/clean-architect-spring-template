@@ -22,15 +22,15 @@ public class ProductController {
 
   @GetMapping("/v1/product/{id}")
   public ResponseEntity<ProductDto> getProduct(@PathVariable("id") String id) {
-    final var result = getMapper(ProductDtoMapper.class).dtoFromBusiness(
+    final var result = getMapper(ProductDtoMapper.class).dtoFromResponse(
         getProductUseCase.getProduct(id));
     return ResponseEntity.ok().body(result);
   }
 
   @PostMapping("/v1/product")
   public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-    final var product = getMapper(ProductDtoMapper.class).businessFromDto(productDto);
-    final var productDtoR = getMapper(ProductDtoMapper.class).dtoFromBusiness(
+    final var product = getMapper(ProductDtoMapper.class).requestFromDto(productDto);
+    final var productDtoR = getMapper(ProductDtoMapper.class).dtoFromResponse(
         addProductUseCase.addProduct(product));
     return ResponseEntity.status(HttpStatus.CREATED).body(productDtoR);
   }

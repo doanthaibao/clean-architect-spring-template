@@ -5,7 +5,6 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind"
     implementation "jakarta.validation:jakarta.validation-api"
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
-    implementation(project(":product-domain"))
     implementation(project(":product-usecase"))
     testImplementation "org.springframework:spring-test"
     testImplementation "org.mockito:mockito-junit-jupiter"

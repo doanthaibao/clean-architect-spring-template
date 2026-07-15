@@ -4,6 +4,7 @@ import bao.doan.productdomain.Product;
 import bao.doan.productdomain.ProductProvider;
 import bao.doan.productusecase.exception.EntityNotFoundException;
 import bao.doan.productusecase.exception.ErrorDetail;
+import bao.doan.productusecase.model.ProductResponse;
 import java.util.Optional;
 
 import jakarta.inject.Named;
@@ -22,9 +23,16 @@ public class GetProductUseCase {
 
   private final ProductProvider productProvider;
 
-  public Product getProduct(String id) {
+  public ProductResponse getProduct(String id) {
     var product = productProvider.getProduct(id);
-    return Optional.ofNullable(product).orElseThrow(
-        () -> new EntityNotFoundException(new ErrorDetail("id", "product is not exist.")));
+    return toProductResponse(Optional.ofNullable(product).orElseThrow(
+        () -> new EntityNotFoundException(new ErrorDetail("id", "product is not exist."))));
+  }
+
+  private ProductResponse toProductResponse(Product product) {
+    return ProductResponse.builder()
+        .id(product.getId())
+        .name(product.getName())
+        .build();
   }
 }

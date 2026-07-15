@@ -7,12 +7,14 @@ import static org.mockito.Mockito.doThrow;
 
 import bao.doan.productapi.exception.CustomResponseEntityExceptionHandler;
 import bao.doan.productapi.product.ProductController;
-import bao.doan.productdomain.Product;
+import bao.doan.productapi.product.ProductDto;
 import bao.doan.productusecase.AddProductUseCase;
 import bao.doan.productusecase.GetProductUseCase;
 import bao.doan.productusecase.exception.EntityAlreadyExistException;
 import bao.doan.productusecase.exception.EntityNotFoundException;
 import bao.doan.productusecase.exception.ErrorDetail;
+import bao.doan.productusecase.model.ProductRequest;
+import bao.doan.productusecase.model.ProductResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,16 +46,20 @@ public class ProductControllerTest {
 
   private static final String ID = "12345";
 
-  private Product product;
+  private ProductDto productDto;
+  private ProductResponse productResponse;
 
   @BeforeEach
   void setup() {
-    product = Product.builder().name("Plan").id(ID).build();
+    productDto = new ProductDto();
+    productDto.setId(ID);
+    productDto.setName("Plan");
+    productResponse = ProductResponse.builder().name("Plan").id(ID).build();
   }
 
   @Test
   public void getResultFromGetProduct() throws Exception {
-    given(getProductUseCase.getProduct(ID)).willReturn(product);
+    given(getProductUseCase.getProduct(ID)).willReturn(productResponse);
     this.mockMvc.perform(MockMvcRequestBuilders.get("/v1/product/{id}", ID))
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -68,20 +74,20 @@ public class ProductControllerTest {
 
   @Test
   public void addNewProduct() throws Exception {
-    given(addProductUseCase.addProduct(product)).willReturn(product);
+    given(addProductUseCase.addProduct(any(ProductRequest.class))).willReturn(productResponse);
     this.mockMvc.perform(MockMvcRequestBuilders.post("/v1/product")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(product)))
+            .content(objectMapper.writeValueAsString(productDto)))
         .andExpect(MockMvcResultMatchers.status().isCreated());
   }
 
   @Test
   public void returnExistExceptionWhenCreateProduct() throws Exception {
     doThrow(new EntityAlreadyExistException(new ErrorDetail("id", "already exists")))
-        .when(addProductUseCase).addProduct(any(Product.class));
+        .when(addProductUseCase).addProduct(any(ProductRequest.class));
     this.mockMvc.perform(MockMvcRequestBuilders.post("/v1/product")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(product)))
+            .content(objectMapper.writeValueAsString(productDto)))
         .andExpect(MockMvcResultMatchers.status().isConflict());
   }
 
