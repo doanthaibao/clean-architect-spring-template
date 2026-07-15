@@ -1,12 +1,13 @@
 package bao.doan.productapi.product;
 
-import bao.doan.productdomain.Product;
+import bao.doan.productusecase.model.ProductRequest;
+import bao.doan.productusecase.model.ProductResponse;
 import org.mapstruct.Mapper;
 
 @Mapper
 public interface ProductDtoMapper {
 
-  ProductDto dtoFromBusiness(Product product);
+  ProductDto dtoFromResponse(ProductResponse productResponse);
 
-  Product businessFromDto(ProductDto productDto);
+  ProductRequest requestFromDto(ProductDto productDto);
 }
